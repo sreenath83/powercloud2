@@ -3,5 +3,4 @@ Java-1.8 (Maven) application
 
 Power Cloud !
 
-Join with us!!!!
-# powercloud2
+Join with us!!!
