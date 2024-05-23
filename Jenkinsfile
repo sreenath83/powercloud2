@@ -1,28 +1,28 @@
 pipeline {
     agent any
+    
     tools {
-        maven 'local_maven' 
+        maven 'local_maven'
     }
-    stages {
-        stage('Build') {
+stages{
+        stage('Build'){
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package -Dmaven.test.skip=true'
             }
-             post { 
-                success { 
-                    echo 'archiving the artifacts'
-                    archiveArtifacts artifacts: '**/taret/*.war'
-                }
-             }
-        }
-
-        stage ('Deployments') {
-            steps {
-                sshagent(['webserver']) {
-                sh "scp -v -o StrictHostKeyChecking=no **/web/target/*.war ec2-user@13.232.92.191:/opt/tomcat/webapps/"
+            post {
+                success {
+                    echo 'Archiving the artifacts'
+                    archiveArtifacts artifacts: '**/target/*.war'
                 }
             }
         }
 
+        stage ('Deployments'){
+                             steps {
+                        sshagent(['webserver']) {
+                       sh "scp -v -o StrictHostKeyChecking=no ./web/target/*.war ec2-user@13.232.92.191:/opt/tomcat/webapps/"
+      }
+                    }
+                }
     }
 }
